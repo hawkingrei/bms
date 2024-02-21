@@ -20,6 +20,7 @@ func NewService(cfg *config.Configure) (*Service, error) {
 		dao:  dao,
 		http: gin.Default(),
 	}
+	gin.SetMode(gin.ReleaseMode)
 	srv.init()
 	return srv, nil
 }
