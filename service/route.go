@@ -27,6 +27,7 @@ func NewService(cfg *config.Configure) (*Service, error) {
 
 func (s *Service) init() {
 	s.http.GET("/ping", s.Ping)
+	s.http.POST("/benchmark", s.Upload)
 }
 
 func (s *Service) Run() {

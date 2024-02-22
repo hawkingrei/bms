@@ -12,7 +12,7 @@ import (
 )
 
 func flagSet() *flag.FlagSet {
-	flagSet := flag.NewFlagSet("redp", flag.ExitOnError)
+	flagSet := flag.NewFlagSet("bms", flag.ExitOnError)
 	flagSet.Bool("version", false, "print version string")
 	flagSet.String("config", "", "path to config file")
 	return flagSet
