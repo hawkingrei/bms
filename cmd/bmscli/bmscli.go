@@ -1,7 +1,8 @@
-package cli
+package bmscli
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"log"
 	"net/http"
@@ -27,10 +28,20 @@ func main() {
 }
 
 func uploadOrigin(data []byte, f string) {
+	var benchOutput BenchOutput
+	json.Unmarshal(data, &benchOutput)
+	if f != "" {
+		benchOutput.TaskName = f
+	}
+	row, err := json.Marshal(&benchOutput)
+	if err != nil {
+		log.Fatalf("Failed to Marshal json: %v", err)
+	}
+
 	url := "https://gobench.hawkingrei.com/saveData"
 	token := "TPhXfzNEpD6DNQn8CJ6z"
 	// Create new http request
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(row))
 	if err != nil {
 		log.Fatalf("Failed to create request: %v", err)
 	}
@@ -53,8 +64,4 @@ func uploadOrigin(data []byte, f string) {
 
 	// Log the status
 	log.Println("Response Status:", resp.Status)
-}
-
-func uploadBenchmark(data []byte, f string) {
-
 }
