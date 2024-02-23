@@ -4,9 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"runtime"
+
+	"github.com/hawkingrei/bms/model"
+	"github.com/shirou/gopsutil/cpu"
 )
 
 func flagSet() *flag.FlagSet {
@@ -33,6 +38,7 @@ func uploadOrigin(data []byte, f string) {
 	if f != "" {
 		benchOutput.TaskName = f
 	}
+	benchOutput.Arch = runtime.GOARCH
 	row, err := json.Marshal(&benchOutput)
 	if err != nil {
 		log.Fatalf("Failed to Marshal json: %v", err)
@@ -64,4 +70,21 @@ func uploadOrigin(data []byte, f string) {
 
 	// Log the status
 	log.Println("Response Status:", resp.Status)
+}
+
+func uploadBms(data []byte, f string) {
+	var benchOutput model.BenchOutput
+	json.Unmarshal(data, &benchOutput)
+	if f != "" {
+		benchOutput.Flag = f
+	}
+	benchOutput.Arch = runtime.GOARCH
+	benchOutput.CompilerVersion = runtime.Version()
+	cpuinfo, err := cpu.Info()
+	if err != nil {
+		log.Fatalf("Failed to get cpu info: %v", err)
+
+	}
+	benchOutput.CPUInfo = cpuinfo[0].ModelName
+	fmt.Println(benchOutput)
 }

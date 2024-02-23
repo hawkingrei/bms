@@ -5,9 +5,10 @@ type BenchOutput struct {
 	Commit          string
 	Branch          string
 	CompilerVersion string
-	Arch            string `
-`
-	Result []BenchResult
+	Arch            string
+	CPUInfo         string
+	Flag            string
+	Result          []BenchResult
 }
 
 type BenchResult struct {
