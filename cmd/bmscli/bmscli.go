@@ -1,4 +1,4 @@
-package bmscli
+package main
 
 import (
 	"bytes"

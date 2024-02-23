@@ -1,4 +1,4 @@
-package bmscli
+package main
 
 type BenchOutput struct {
 	Date     string
